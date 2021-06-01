@@ -1,0 +1,17 @@
+43:00
+
+ask about open cv
+ask about epipolar / rectification chicken or the egg issue
+
+
+
+manually provide correspondences 
+
+findfundamentalmap
+
+https://docs.opencv.org/master/da/de9/tutorial_py_epipolar_geometry.html
+
+
+fundmatr maps pixel coords of one camera to the other, doesn't map world coords
+
+compute f and generate the epipolar lines
