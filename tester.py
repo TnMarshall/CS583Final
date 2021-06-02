@@ -2,6 +2,9 @@ import numpy as np
 import cv2 as cv
 import math
 import os
+import time
+
+from numpy.core.fromnumeric import cumprod
 # print( cv.__version__)
 
 # tester = np.ones([2,3])
@@ -22,12 +25,29 @@ import os
 #     k = cv.waitKey(0)
 
 
-tester = np.array([[1,1],[1,1]])
-tester2 = np.array([[1,1],[1,1]])
+# tester = np.array([[1,1],[1,1]])
+# tester2 = np.array([[1,1],[1,1]])
 
-N = np.sum(abs(abs(tester) - abs(tester2)))
+# N = np.sum(abs(abs(tester) - abs(tester2)))
 
-print(N)
+# print(N)
+
+curPoint = np.array((1,1))
+corresPoint = np.array((2,2))
+
+
+t = time.time()
+dist = abs(np.linalg.norm(curPoint - corresPoint))
+elapsed = time.time()-t
+
+t = time.time()
+dist2 = np.sqrt((curPoint[0]-corresPoint[0])**2 + (curPoint[1]-corresPoint[1])**2)
+elapsed2 = time.time()-t
+
+print(dist)
+print(dist2)
+print(elapsed)
+print(elapsed2)
 
 # def selectCurWindow(image, windowSize, X, Y):
 #             numPixRow = image.shape[1]
@@ -54,7 +74,10 @@ print(N)
             
 
 # # tester = np.ones([10,10])
-# tester = np.array([[0,1,2,3,4,5,6,7,8,9],[1,2,3,4,5,6,7,8,9,0],[2,3,4,5,6,7,8,9,0,1],[3,4,5,6,7,8,9,0,1,2],[4,5,6,7,8,9,0,1,2,3],[5,6,7,8,9,0,1,2,3,4],[6,7,8,9,0,1,2,3,4,5],[7,8,9,0,1,2,3,4,5,6],[8,9,0,1,2,3,4,5,6,7],[9,0,1,2,3,4,5,6,7,8]])
+tester = np.array([[0,1,2,3,4,5,6,7,8,9],[1,2,3,4,5,6,7,8,9,0],[2,3,4,5,6,7,8,9,0,1],[3,4,5,6,7,8,9,0,1,2],[4,5,6,7,8,9,0,1,2,3],[5,6,7,8,9,0,1,2,3,4],[6,7,8,9,0,1,2,3,4,5],[7,8,9,0,1,2,3,4,5,6],[8,9,0,1,2,3,4,5,6,7],[9,0,1,2,3,4,5,6,7,8]])
+
+print(np.max(tester))
+print(255*tester/9)
 
 # # selectCurWindow(tester, 5, 0,0)
 # # selectCurWindow(tester, 5, 9,9)
