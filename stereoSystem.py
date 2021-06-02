@@ -246,12 +246,15 @@ class stereoSystem:
 
             for i in range(-offset,offset+1):
                 for j in range(-offset,offset+1):
-                    if (((X + i) < 0) or ((X + i) >= numPixRow)):
-                        pass
-                    elif (((Y + j) < 0) or ((Y + j) >= numPixCol)):
-                        pass
-                    else:
+                    # if (((X + i) < 0) or ((X + i) >= numPixRow)):
+                    #     pass
+                    # elif (((Y + j) < 0) or ((Y + j) >= numPixCol)):
+                    #     pass
+                    # else:
+                    try:
                         window[i+offset,j+offset]  = image[X+i,Y+j]
+                    except:
+                        pass
 
             # print(window,'\n')
             return window
