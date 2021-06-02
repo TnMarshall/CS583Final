@@ -1,8 +1,11 @@
 import numpy as np
 import cv2 as cv
+import math
 import os
 import copy
+import time
 from matplotlib import pyplot as plt
+from numpy.core.numeric import correlate
 
 class stereoSystem:
 
@@ -174,6 +177,7 @@ class stereoSystem:
         pts1 = np.int32(pts1)
         pts2 = np.int32(pts2)
         F, mask = cv.findFundamentalMat(pts1,pts2,cv.FM_LMEDS)
+        self.fundMatr = F
         # We select only inlier points
         pts1 = pts1[mask.ravel()==1]
         pts2 = pts2[mask.ravel()==1]
@@ -214,6 +218,84 @@ class stereoSystem:
         k = cv.waitKey(0)
 
 
+    def findCorrespondant(self, X,Y, windowSize):
+        '''Because the images are rectified, the epipolar lines are horizontal
+            X = x coord in left image
+            Y = y coord in right image'''
+
+        def selectCurWindow(image, windowSize, X, Y):
+            # numPixRow = image.shape[1]
+            # numPixCol = image.shape[0]
+
+            # Switched due to numpy orientation
+            numPixRow = image.shape[0]
+            numPixCol = image.shape[1]
+
+
+            if ((X >= numPixRow) or (X < 0)) or ((Y >= numPixCol) or (Y < 0)):
+                return -1
+
+            window = np.zeros([windowSize,windowSize])
+            offset = math.floor(windowSize/2)
+
+            for i in range(-offset,offset+1):
+                for j in range(-offset,offset+1):
+                    if (((X + i) < 0) or ((X + i) >= numPixRow)):
+                        pass
+                    elif (((Y + j) < 0) or ((Y + j) >= numPixCol)):
+                        pass
+                    else:
+                        window[i+offset,j+offset]  = image[X+i,Y+j]
+
+            # print(window,'\n')
+            return window
+        
+        numPixRow = self.width
+
+        # windowSize = 201
+
+        img1 = cv.cvtColor(self.imgL, cv.COLOR_BGR2GRAY)
+        img2 = cv.cvtColor(self.imgR, cv.COLOR_BGR2GRAY)
+
+        curWind = selectCurWindow(img1, windowSize, Y, X)
+
+        energyDifs = np.zeros([1,numPixRow])
+
+        for i in range(0,numPixRow):
+            curCompWind = selectCurWindow(img2, windowSize, Y, i)
+            # used for checking
+            # curCompWind = selectCurWindow(img1, windowSize, Y, i)
+
+            # N = np.sum(np.multiply(curWind,curCompWind))/(np.sum(np.sqrt(np.multiply(curWind,curWind)))*np.sum(np.sqrt(np.multiply(curCompWind,curCompWind))))
+            N = np.sum(abs(abs(curWind) - abs(curCompWind)))
+            energyDifs[0,i] = N
+
+        # print(energyDifs)
+
+        curInd = 0
+        curVal = abs(energyDifs[0,0])
+        for i in range(0,numPixRow):
+            curCheck = abs(energyDifs[0,i])
+            if not(curCheck == 1) and (energyDifs[0,i] < curVal):
+                curVal = abs(energyDifs[0,i])
+                curInd = i
+                
+        print(curInd)
+        curCompWind = selectCurWindow(img2, windowSize, Y, curInd)
+        # Used for checking
+        # curCompWind = selectCurWindow(img1, windowSize, Y, curInd)
+
+        # Visualize for checking
+        # cv.imshow("curWind", np.array(curWind,dtype=np.uint8))
+        # cv.imshow("curCompWind", np.array(curCompWind,dtype=np.uint8))
+        # k = cv.waitKey(0)
+
+        return [curInd, Y]
+
+
+
+
+    # def generateDispMap(self):
 
 
 
@@ -235,4 +317,5 @@ if __name__ == "__main__":
 
     s = stereoSystem(imagLpath, imagRpath, cam0, cam1, height, width, doffs, baseline)
     # s.drawEpipolar(100,200)
-    s.findFundMatr()
+    # s.findFundMatr()
+    corresPoint = s.findCorrespondant(200,200, 101)
