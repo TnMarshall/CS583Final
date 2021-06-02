@@ -38,4 +38,8 @@ s2 = stereoSystem(imagLpath, imagRpath, cam0, cam1, height, width, doffs, baseli
 s2.findFundMatr()
 # corresPoint = s.findCorrespondant(200,200, 101)
 s2.displayCorrespondent(150,150, 31)
+s2.displayCorrespondent(250,350, 31)
+s2.displayCorrespondent(350,250, 31)
+s2.displayCorrespondent(365,241, 31)
+s2.displayCorrespondent(600,50, 31)
 # s.generateDispMap(31)
