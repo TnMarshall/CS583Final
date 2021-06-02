@@ -34,6 +34,9 @@ class stereoSystem:
 
         self.extrinsT = np.array([[baseline],[0],[0]])
 
+        self.imgLg = cv.cvtColor(self.imgL, cv.COLOR_BGR2GRAY)
+        self.imgRg = cv.cvtColor(self.imgR, cv.COLOR_BGR2GRAY)
+
         # WRONG maybe
         # # the fundamental matrix in this case is just extrinsT because the cameras are axis-aligned
         # self.fund = self.extrinsT
@@ -153,8 +156,11 @@ class stereoSystem:
 
         ##### Modified FROM OPENCV TUTORIAL https://docs.opencv.org/master/da/de9/tutorial_py_epipolar_geometry.html #####
 
-        img1 = cv.cvtColor(self.imgL, cv.COLOR_BGR2GRAY)
-        img2 = cv.cvtColor(self.imgR, cv.COLOR_BGR2GRAY)
+        # img1 = cv.cvtColor(self.imgL, cv.COLOR_BGR2GRAY)
+        # img2 = cv.cvtColor(self.imgR, cv.COLOR_BGR2GRAY)
+
+        img1 = self.imgLg
+        img2 = self.imgRg
 
         sift = cv.SIFT_create()
         # find the keypoints and descriptors with SIFT
@@ -254,8 +260,11 @@ class stereoSystem:
 
         # windowSize = 201
 
-        img1 = cv.cvtColor(self.imgL, cv.COLOR_BGR2GRAY)
-        img2 = cv.cvtColor(self.imgR, cv.COLOR_BGR2GRAY)
+        # img1 = cv.cvtColor(self.imgL, cv.COLOR_BGR2GRAY)
+        # img2 = cv.cvtColor(self.imgR, cv.COLOR_BGR2GRAY)
+
+        img1 = self.imgLg
+        img2 = self.imgRg
 
         curWind = selectCurWindow(img1, windowSize, Y, X)
 
@@ -316,8 +325,8 @@ class stereoSystem:
 
     def generateDispMap(self, windowSize):
         dispMap = np.zeros(self.imgL.shape[0:2])
-        for i in range(150,350):#self.width):
-            for j in range(150,350):#self.height):
+        for i in range(0,self.width):#(150,250):#self.width):
+            for j in range(0,self.width):#(150,250):#self.height):
                 curPoint = np.array([i,j])
                 t = time.time()
                 corresPoint = self.findCorrespondant(i,j, windowSize)
@@ -361,5 +370,5 @@ if __name__ == "__main__":
     # s.drawEpipolar(100,200)
     # s.findFundMatr()
     # corresPoint = s.findCorrespondant(200,200, 101)
-    s.displayCorrespondent(150,150, 31)
-    # s.generateDispMap(3)
+    # s.displayCorrespondent(150,150, 31)
+    s.generateDispMap(31)
