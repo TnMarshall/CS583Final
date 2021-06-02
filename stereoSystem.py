@@ -302,9 +302,16 @@ class stereoSystem:
 
         cv.circle(img1, (X,Y), windowSize, (0,0,255), 5)
         cv.circle(img2, (Xr,Yr), windowSize, (0,0,255), 5)
-        cv.imshow("Left", img1)
-        cv.imshow("Right", img2)
+        left = "Left X: " + str(X) + " Y: " + str(Y)
+        right = "Right X: " + str(Xr) + " Y: " + str(Yr)
+        # cv.imshow(left, img1)
+        # cv.imshow(right, img2)
+        buffer = np.ones((self.height,50,3),dtype=np.uint8)*253
+        img_cat = np.concatenate((img1,buffer),axis=1)
+        img_cat = np.concatenate((img_cat,img2),axis=1)
+        cv.imshow(left + " | " + right, img_cat)
         k = cv.waitKey(0)
+        cv.destroyAllWindows()
 
 
     def generateDispMap(self, windowSize):
