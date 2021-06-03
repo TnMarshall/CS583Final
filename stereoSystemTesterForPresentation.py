@@ -16,11 +16,11 @@ s = stereoSystem(imagLpath, imagRpath, cam0, cam1, height, width, doffs, baselin
 # s.drawEpipolar(100,200)
 s.findFundMatr()
 # corresPoint = s.findCorrespondant(200,200, 101)
-s.displayCorrespondent(150,150, 31)
-s.displayCorrespondent(250,350, 31)
-s.displayCorrespondent(350,250, 31)
-s.displayCorrespondent(365,241, 31)
-s.displayCorrespondent(600,50, 31)
+s.displayCorrespondent(150,150, 27)
+s.displayCorrespondent(250,350, 27)
+s.displayCorrespondent(350,250, 27)
+s.displayCorrespondent(365,241, 27)
+s.displayCorrespondent(600,50, 27)
 # s.generateDispMap(31)
 
 dirname = os.path.dirname(__file__)
@@ -33,13 +33,17 @@ height=485
 doffs=19.331
 baseline=236.922
 
+for i in range(0,20):
+    for j in range(0,20):
+        s.displayCorrespondent(100+i*10,100+j*10, 27)
+
 s2 = stereoSystem(imagLpath, imagRpath, cam0, cam1, height, width, doffs, baseline)
 # s2.drawEpipolar(100,200)
 s2.findFundMatr()
 # corresPoint = s.findCorrespondant(200,200, 101)
-s2.displayCorrespondent(150,150, 31)
-s2.displayCorrespondent(250,350, 31)
-s2.displayCorrespondent(350,250, 31)
-s2.displayCorrespondent(365,241, 31)
-s2.displayCorrespondent(600,50, 31)
+s2.displayCorrespondent(150,150, 27)
+s2.displayCorrespondent(250,350, 27)
+s2.displayCorrespondent(350,250, 27)
+s2.displayCorrespondent(365,241, 27)
+s2.displayCorrespondent(600,50, 27)
 # s.generateDispMap(31)

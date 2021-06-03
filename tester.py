@@ -11,12 +11,13 @@ from numpy.core.fromnumeric import cumprod
 # print(tester)
 # print(tester.shape[1])
 
-# dirname = os.path.dirname(__file__)
-# imagLpath = dirname + "\\MiddEval3-data-Q\\MiddEval3\\trainingQ\\Motorcycle\\im0.png"
+dirname = os.path.dirname(__file__)
+imagLpath = dirname + "\\MiddEval3-data-Q\\MiddEval3\\trainingQ\\Motorcycle\\im0.png"
 
-# imgL = cv.imread(cv.samples.findFile(imagLpath))
-# cv.imshow("Left", imgL)
-# k = cv.waitKey(0)
+imgL = cv.imread(cv.samples.findFile(imagLpath))
+imgL = imgL[100:360,100:360,:]
+cv.imshow("Left", imgL)
+k = cv.waitKey(0)
 
 # for i in range(0,10):
 #     # cv.rectangle(imgL, (20+40*i,20),(40+40*i,40),(0,255,0),3)
@@ -32,22 +33,22 @@ from numpy.core.fromnumeric import cumprod
 
 # print(N)
 
-curPoint = np.array((1,1))
-corresPoint = np.array((2,2))
+# curPoint = np.array((1,1))
+# corresPoint = np.array((2,2))
 
 
-t = time.time()
-dist = abs(np.linalg.norm(curPoint - corresPoint))
-elapsed = time.time()-t
+# t = time.time()
+# dist = abs(np.linalg.norm(curPoint - corresPoint))
+# elapsed = time.time()-t
 
-t = time.time()
-dist2 = np.sqrt((curPoint[0]-corresPoint[0])**2 + (curPoint[1]-corresPoint[1])**2)
-elapsed2 = time.time()-t
+# t = time.time()
+# dist2 = np.sqrt((curPoint[0]-corresPoint[0])**2 + (curPoint[1]-corresPoint[1])**2)
+# elapsed2 = time.time()-t
 
-print(dist)
-print(dist2)
-print(elapsed)
-print(elapsed2)
+# print(dist)
+# print(dist2)
+# print(elapsed)
+# print(elapsed2)
 
 # def selectCurWindow(image, windowSize, X, Y):
 #             numPixRow = image.shape[1]

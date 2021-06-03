@@ -266,27 +266,41 @@ class stereoSystem:
         # img1 = cv.cvtColor(self.imgL, cv.COLOR_BGR2GRAY)
         # img2 = cv.cvtColor(self.imgR, cv.COLOR_BGR2GRAY)
 
+        t = time.time()
+                
         img1 = self.imgLg
         img2 = self.imgRg
 
+        elapsed1 = time.time() - t
+
+        t = time.time()
         curWind = selectCurWindow(img1, windowSize, Y, X)
+        elapsed2 = time.time() - t
 
-        energyDifs = np.zeros([1,numPixRow])
+        offset = 60
+        xMin = X - offset
+        xMax = X + offset
+        if xMax > numPixRow:
+            xMax = numPixRow
+        if xMin < 0:
+            xMin = 0
 
-        for i in range(0,numPixRow):
+        energyDifs = np.zeros([1,xMax-xMin])
+        t = time.time()
+        for i in range(xMin,xMax):
             curCompWind = selectCurWindow(img2, windowSize, Y, i)
             # used for checking
             # curCompWind = selectCurWindow(img1, windowSize, Y, i)
 
             # N = np.sum(np.multiply(curWind,curCompWind))/(np.sum(np.sqrt(np.multiply(curWind,curWind)))*np.sum(np.sqrt(np.multiply(curCompWind,curCompWind))))
             N = np.sum(abs(abs(curWind) - abs(curCompWind)))
-            energyDifs[0,i] = N
-
+            energyDifs[0,i-xMin] = N
+        elapsed3 = time.time() - t
         # print(energyDifs)
 
         curInd = 0
         # curVal = abs(energyDifs[0,0])
-        curInd = np.argmin(energyDifs)
+        curInd = np.argmin(energyDifs)+xMin
 
         # for i in range(0,numPixRow):
         #     curCheck = abs(energyDifs[0,i])
@@ -303,6 +317,10 @@ class stereoSystem:
         # cv.imshow("curWind", np.array(curWind,dtype=np.uint8))
         # cv.imshow("curCompWind", np.array(curCompWind,dtype=np.uint8))
         # k = cv.waitKey(0)
+
+        # print(elapsed1)
+        # print(elapsed2)
+        # print(elapsed3)
 
         return np.array([curInd, Y])
 
@@ -322,21 +340,23 @@ class stereoSystem:
         img_cat = np.concatenate((img1,buffer),axis=1)
         img_cat = np.concatenate((img_cat,img2),axis=1)
         cv.imshow(left + " | " + right, img_cat)
+        cv.moveWindow(left + " | " + right, 100,100)
         k = cv.waitKey(0)
         cv.destroyAllWindows()
 
 
     def generateDispMap(self, windowSize):
         dispMap = np.zeros(self.imgL.shape[0:2])
-        for i in range(0,self.width):#(150,250):#self.width):
-            for j in range(0,self.width):#(150,250):#self.height):
+        for i in range(100,360):#self.width):
+            for j in range(100,360):#self.height):
                 curPoint = np.array([i,j])
                 t = time.time()
                 corresPoint = self.findCorrespondant(i,j, windowSize)
                 elapsed1 = time.time() - t
                 # dist = abs(np.linalg.norm(curPoint - corresPoint))
                 # t = time.time()
-                dist = np.sqrt((curPoint[0]-corresPoint[0])**2 + (curPoint[1]-corresPoint[1])**2)
+                # dist = np.sqrt((curPoint[0]-corresPoint[0])**2 + (curPoint[1]-corresPoint[1])**2)
+                dist = curPoint[0]-corresPoint[0]
                 # elapsed2 = time.time() -t
                 dispMap[i,j] = dist
                 print([elapsed1])
@@ -373,5 +393,5 @@ if __name__ == "__main__":
     # s.drawEpipolar(100,200)
     # s.findFundMatr()
     # corresPoint = s.findCorrespondant(200,200, 101)
-    # s.displayCorrespondent(150,150, 31)
-    s.generateDispMap(31)
+    # s.displayCorrespondent(150,150, 27)
+    s.generateDispMap(27)
