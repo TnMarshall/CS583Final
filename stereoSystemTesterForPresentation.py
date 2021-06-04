@@ -35,7 +35,7 @@ baseline=236.922
 
 for i in range(0,20):
     for j in range(0,20):
-        s.displayCorrespondent(100+i*10,100+j*10, 27)
+        s.displayCorrespondent(100+i*10,100+j*10, 11)
 
 s2 = stereoSystem(imagLpath, imagRpath, cam0, cam1, height, width, doffs, baseline)
 # s2.drawEpipolar(100,200)

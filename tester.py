@@ -15,7 +15,7 @@ dirname = os.path.dirname(__file__)
 imagLpath = dirname + "\\MiddEval3-data-Q\\MiddEval3\\trainingQ\\Motorcycle\\im0.png"
 
 imgL = cv.imread(cv.samples.findFile(imagLpath))
-imgL = imgL[100:360,100:360,:]
+imgL = imgL[100:300,100:300,:]
 cv.imshow("Left", imgL)
 k = cv.waitKey(0)
 

@@ -266,16 +266,16 @@ class stereoSystem:
         # img1 = cv.cvtColor(self.imgL, cv.COLOR_BGR2GRAY)
         # img2 = cv.cvtColor(self.imgR, cv.COLOR_BGR2GRAY)
 
-        t = time.time()
+        # t = time.time()
                 
         img1 = self.imgLg
         img2 = self.imgRg
 
-        elapsed1 = time.time() - t
+        # elapsed1 = time.time() - t
 
-        t = time.time()
+        # t = time.time()
         curWind = selectCurWindow(img1, windowSize, Y, X)
-        elapsed2 = time.time() - t
+        # elapsed2 = time.time() - t
 
         offset = 60
         xMin = X - offset
@@ -286,7 +286,7 @@ class stereoSystem:
             xMin = 0
 
         energyDifs = np.zeros([1,xMax-xMin])
-        t = time.time()
+        # t = time.time()
         for i in range(xMin,xMax):
             curCompWind = selectCurWindow(img2, windowSize, Y, i)
             # used for checking
@@ -295,7 +295,7 @@ class stereoSystem:
             # N = np.sum(np.multiply(curWind,curCompWind))/(np.sum(np.sqrt(np.multiply(curWind,curWind)))*np.sum(np.sqrt(np.multiply(curCompWind,curCompWind))))
             N = np.sum(abs(abs(curWind) - abs(curCompWind)))
             energyDifs[0,i-xMin] = N
-        elapsed3 = time.time() - t
+        # elapsed3 = time.time() - t
         # print(energyDifs)
 
         curInd = 0
@@ -347,26 +347,32 @@ class stereoSystem:
 
     def generateDispMap(self, windowSize):
         dispMap = np.zeros(self.imgL.shape[0:2])
-        for i in range(100,360):#self.width):
-            for j in range(100,360):#self.height):
-                curPoint = np.array([i,j])
-                t = time.time()
-                corresPoint = self.findCorrespondant(i,j, windowSize)
-                elapsed1 = time.time() - t
+        # for y in range(200,290):#(100,300):#self.width):
+        #     for x in range(450,540):#(100,300):#self.height):
+        for y in range(100,300):#(100,300):#self.width):
+            for x in range(100,300):#(100,300):#self.height):
+                curPoint = np.array([y,x])
+                # t = time.time()
+                corresPoint = self.findCorrespondant(x,y, windowSize)
+                # elapsed1 = time.time() - t
                 # dist = abs(np.linalg.norm(curPoint - corresPoint))
                 # t = time.time()
                 # dist = np.sqrt((curPoint[0]-corresPoint[0])**2 + (curPoint[1]-corresPoint[1])**2)
                 dist = curPoint[0]-corresPoint[0]
                 # elapsed2 = time.time() -t
-                dispMap[i,j] = dist
-                print([elapsed1])
+                dispMap[y,x] = abs(dist)
+                # print([elapsed1])
 
         # dispMap = np.array(dispMap, dtype=np.uint8)
         max = np.max(dispMap)
 
-        dispMap = (dispMap / max) * 255
+        if max != 0:
+            dispMap = (dispMap / max) * 255
+        
 
         dispMap = np.array(dispMap,dtype=np.uint8)
+        elapsed1 = time.time() - t
+        print(elapsed1)
         cv.imshow("dispMap", dispMap)
         k = cv.waitKey(0)
         
@@ -393,5 +399,7 @@ if __name__ == "__main__":
     # s.drawEpipolar(100,200)
     # s.findFundMatr()
     # corresPoint = s.findCorrespondant(200,200, 101)
-    # s.displayCorrespondent(150,150, 27)
-    s.generateDispMap(27)
+    # s.displayCorrespondent(150,150, 31)
+    t = time.time()
+    s.generateDispMap(23)
+    
