@@ -364,10 +364,20 @@ class stereoSystem:
                 # print([elapsed1])
 
         # dispMap = np.array(dispMap, dtype=np.uint8)
-        max = np.max(dispMap)
+        # max = np.max(dispMap)
+        mean = np.mean(dispMap)
+        std = np.std(dispMap)
 
-        if max != 0:
-            dispMap = (dispMap / max) * 255
+        if std != 0:
+            dispMap = (dispMap - mean)/std
+            minDisp = np.min(dispMap)
+            maxDisp = np.max(dispMap)
+            dispMap = (dispMap - minDisp) * (254 - 0) / (maxDisp - minDisp) + 0 #map
+        else:
+            dispMap = dispMap - mean
+
+        # if max != 0:
+        #     dispMap = (dispMap / max) * 255
         
 
         dispMap = np.array(dispMap,dtype=np.uint8)
