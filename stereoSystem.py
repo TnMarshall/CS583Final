@@ -349,8 +349,8 @@ class stereoSystem:
         dispMap = np.zeros(self.imgL.shape[0:2])
         # for y in range(200,290):#(100,300):#self.width):
         #     for x in range(450,540):#(100,300):#self.height):
-        for y in range(100,300):#(100,300):#self.width):
-            for x in range(100,300):#(100,300):#self.height):
+        for y in range(0,self.height,5):#(100,300):#self.width):
+            for x in range(0,self.width,5):#(100,300):#self.height):
                 curPoint = np.array([y,x])
                 # t = time.time()
                 corresPoint = self.findCorrespondant(x,y, windowSize)
