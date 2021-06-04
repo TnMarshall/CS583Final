@@ -349,8 +349,9 @@ class stereoSystem:
         dispMap = np.zeros(self.imgL.shape[0:2])
         # for y in range(200,290):#(100,300):#self.width):
         #     for x in range(450,540):#(100,300):#self.height):
-        for y in range(0,self.height,5):#(100,300):#self.width):
-            for x in range(0,self.width,5):#(100,300):#self.height):
+        for y in range(0,self.height):#(100,300):#self.width):
+            print(y)
+            for x in range(0,self.width):#(100,300):#self.height):
                 curPoint = np.array([y,x])
                 # t = time.time()
                 corresPoint = self.findCorrespondant(x,y, windowSize)
@@ -410,6 +411,30 @@ if __name__ == "__main__":
     # s.findFundMatr()
     # corresPoint = s.findCorrespondant(200,200, 101)
     # s.displayCorrespondent(150,150, 31)
-    t = time.time()
-    s.generateDispMap(23)
+
+    # t = time.time()
+    # s.generateDispMap(23)
     
+
+
+dirname = os.path.dirname(__file__)
+imagLpath = dirname + "\\MiddEval3-data-Q\\MiddEval3\\trainingQ\\Pipes\\im0.png"
+imagRpath = dirname + "\\MiddEval3-data-Q\\MiddEval3\\trainingQ\\Pipes\\im1.png"
+cam0=np.array([[989.886, 0, 392.942], [0, 989.886, 243.221], [0, 0, 1,]])
+cam1=np.array([[989.886, 0, 412.274], [0, 989.886, 243.221], [0, 0, 1]])
+width=735
+height=485
+doffs=19.331
+baseline=236.922
+
+s2 = stereoSystem(imagLpath, imagRpath, cam0, cam1, height, width, doffs, baseline)
+# s2.drawEpipolar(100,200)
+# s2.findFundMatr()
+# corresPoint = s.findCorrespondant(200,200, 101)
+# s2.displayCorrespondent(150,150, 27)
+# s2.displayCorrespondent(250,350, 27)
+# s2.displayCorrespondent(350,250, 27)
+# s2.displayCorrespondent(365,241, 27)
+# s2.displayCorrespondent(600,50, 27)
+t = time.time()
+s.generateDispMap(23)
